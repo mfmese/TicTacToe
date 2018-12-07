@@ -4,50 +4,49 @@ import java.util.ArrayList;
 
 public class AiPlayer extends PlayerBase {
 
-	private String playerType;
+	private String player;
 	private String[] playField;
 
-	public AiPlayer(String playerType, String[] playField) {
-		super(playField, playerType);
-		this.playerType = playerType;
+	public AiPlayer(String player, String[] playField) {
+		super(playField, player);
+		this.player = player;
 		this.playField = playField;
 	}
 
 	public int playSpot() {
 
-		int spot = getBestSpot(playerType).getIndex();
-		playField[Integer.valueOf(spot)] = playerType;
+		int spot = getBestSpotForAiPlayer(player).getSpotx();
+		playField[Integer.valueOf(spot)] = player;
 		System.out.println();
-		System.out.println("Config.aiPlayer play for " + playerType + ": " + spot);
+		System.out.println("Config.aiPlayer play for " + player + ": " + spot);
 		return Integer.valueOf(spot);
 	}
 
-	private Move getBestSpot(String player) {
+	private Move getBestSpotForAiPlayer(String player) {
 
 		ArrayList<Integer> emptySpots = getEmptySpotsInPlayField();
 		ArrayList<Move> moves = new ArrayList<Move>();
 
-		// Get the best Score for Config.aiPlayer
-		Move move = getBestScore(emptySpots);
+		Move move = getBestScoreForAiPlayer(emptySpots);
 		if (move.getScore() != -1)
 			return move;
 
 		for (int i = 0; i < emptySpots.size(); i++) {
 			int emptySpot = Integer.valueOf(emptySpots.get(i));
 
-			move.setIndex(Integer.valueOf(playField[emptySpot]));
+			move.setSpot(Integer.valueOf(playField[emptySpot]));
 
 			playField[emptySpot] = player;
 
 			if (player == Config.aiPlayer) {
-				move.setScore(getBestSpot(Config.player1).getScore());
+				move.setScore(getBestSpotForAiPlayer(Config.player1).getScore());
 			} else if (player == Config.player1) {
-				move.setScore(getBestSpot(Config.player1).getScore());
+				move.setScore(getBestSpotForAiPlayer(Config.player1).getScore());
 			} else if (player == Config.player1) {
-				move.setScore(getBestSpot(Config.aiPlayer).getScore());
+				move.setScore(getBestSpotForAiPlayer(Config.aiPlayer).getScore());
 			}
 
-			playField[emptySpot] = String.valueOf(move.getIndex());
+			playField[emptySpot] = String.valueOf(move.getSpotx());
 
 			if ((player == Config.aiPlayer && move.getScore() == 10)
 					|| (player == Config.player1 && move.getScore() == -10)
@@ -57,10 +56,10 @@ public class AiPlayer extends PlayerBase {
 				moves.add(move);
 		}
 
-		return getBestMove(moves, player);
+		return getBestMoveForAiPlayer(moves, player);
 	}
 
-	private Move getBestScore(ArrayList<Integer> emptySpots) {
+	private Move getBestScoreForAiPlayer(ArrayList<Integer> emptySpots) {
 
 		Move move = new Move();
 		move.setScore(-1);
@@ -75,7 +74,7 @@ public class AiPlayer extends PlayerBase {
 		return move;
 	}
 
-	private Move getBestMove(ArrayList<Move> moves, String player) {
+	private Move getBestMoveForAiPlayer(ArrayList<Move> moves, String player) {
 
 		int bestScore = moves.get(0).getScore();
 		int bestMove = 0;

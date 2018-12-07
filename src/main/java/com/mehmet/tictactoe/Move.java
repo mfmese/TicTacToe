@@ -4,10 +4,10 @@ public class Move {
 	private  int spot;
 	private int score;
 	
-	public int getIndex() {
+	public int getSpotx() {
 		return spot;
 	}
-	public void setIndex(int index) {
+	public void setSpot(int index) {
 		this.spot = index;
 	}
 	public int getScore() {

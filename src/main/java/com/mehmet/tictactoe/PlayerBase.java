@@ -6,19 +6,19 @@ import java.util.ArrayList;
 public abstract class PlayerBase {
 
 	private String[] playField;
-	private String playerType;
+	private String player;
 
 	public PlayerBase() {
 
 	}
 
-	public PlayerBase(String[] playField, String playerType) {
+	public PlayerBase(String[] playField, String player) {
 		this.playField = playField;
-		this.playerType = playerType;
+		this.player = player;
 	}
 
 	public abstract int playSpot() throws IOException;
-	
+
 	public ArrayList<Integer> getEmptySpotsInPlayField() {
 
 		ArrayList<Integer> emptySpots = new ArrayList<Integer>();
@@ -38,18 +38,15 @@ public abstract class PlayerBase {
 	// If one player win or no player win until no slot remain in the playField then return true
 	public boolean isGaveOver() {
 
-		boolean isWinner = false;
-		boolean isTie = false;
-
-		isWinner = isWinner();
-		if (isWinner)
-			System.out.println("Winner is " + playerType);
-
-		isTie = isTieGame();
-		if (isTie)
+		if (isWinner()) {
+			System.out.println("Winner is " + player);
+			return true;
+		} else if (isTieGame()) {
 			System.out.println("Tie Game");
+			return true;
+		}
 
-		return isWinner || isTie;
+		return false;
 	}
 
 	public void showPlayField() {
@@ -78,20 +75,24 @@ public abstract class PlayerBase {
 	}
 
 	public boolean isWinner() {
-		return isWinner(playerType);
+		return isWinner(player);
 	}
-	
-	public boolean isWinner(String playerType) {
 
-		if (isWinComboRowAndColumn(playerType)) {
+	public boolean isWinner(String player) {
+
+		int playFieldLength = playField.length;
+		Double playFieldOneSideTemp = Math.sqrt(Double.valueOf(playFieldLength));
+		int playFieldOneSide = playFieldOneSideTemp.intValue();
+		
+		if (isWinComboRowAndColumn(player, playFieldLength, playFieldOneSide)) {
 			return true;
 		}
 
-		if (isWinComboDiagonalLeftToRight(playerType)) {
+		if (isWinComboDiagonalLeftToRight(player, playFieldLength, playFieldOneSide)) {
 			return true;
 		}
 
-		if (isWinComboDiagonalRightToLeft(playerType)) {
+		if (isWinComboDiagonalRightToLeft(player, playFieldLength, playFieldOneSide)) {
 			return true;
 		}
 
@@ -99,11 +100,7 @@ public abstract class PlayerBase {
 	}
 
 	// Check playerType is at the same column And Row in sequance
-	private boolean isWinComboRowAndColumn(String playerType) {
-
-		int playFieldSizeTotal = playField.length;
-		Double playFieldOneSideTemp = Math.sqrt(Double.valueOf(playFieldSizeTotal));
-		int playFieldOneSide = playFieldOneSideTemp.intValue();
+	private boolean isWinComboRowAndColumn(String player, int playFieldLength, int playFieldOneSide) {
 
 		boolean isColumnWin = true;
 		boolean isRowWin = true;
@@ -114,8 +111,8 @@ public abstract class PlayerBase {
 
 			// column in sequance
 			isColumnWin = true;
-			for (int j = i; j < playFieldSizeTotal; j = j + playFieldOneSide) {
-				if (!playField[j].equals(playerType)) {
+			for (int j = i; j < playFieldLength; j = j + playFieldOneSide) {
+				if (!playField[j].equals(player)) {
 					isColumnWin = false;
 				}
 			}
@@ -126,7 +123,7 @@ public abstract class PlayerBase {
 			// row in sequance
 			isRowWin = true;
 			for (int j = 0; j < playFieldOneSide; j++) {
-				if (!playField[index].equals(playerType)) {
+				if (!playField[index].equals(player)) {
 					isRowWin = false;
 				}
 				index++;
@@ -140,17 +137,15 @@ public abstract class PlayerBase {
 	}
 
 	// Check playertype is at diagonal in sequance from right to left
-	private boolean isWinComboDiagonalRightToLeft(String playerType) {
+	private boolean isWinComboDiagonalRightToLeft(String player, int playFieldLength, int playFieldOneSide) {
 
-		int playFieldSizeTotal = playField.length;
-		Double playFieldOneSideTemp = Math.sqrt(Double.valueOf(playFieldSizeTotal));
-		int playFieldOneSide = playFieldOneSideTemp.intValue();
 		boolean isdiagonalWin = true;
 
 		int counter = 1;
-		for (int i = playFieldOneSide - 1 ; i <= playFieldSizeTotal - playFieldOneSide; i = counter * (playFieldOneSide - 1)) {
+		for (int i = playFieldOneSide - 1; i <= playFieldLength - playFieldOneSide; i = counter
+				* (playFieldOneSide - 1)) {
 
-			if (!playField[i].equals(playerType)) {
+			if (!playField[i].equals(player)) {
 				isdiagonalWin = false;
 			}
 			counter++;
@@ -160,19 +155,16 @@ public abstract class PlayerBase {
 	}
 
 	// Check playertype is at diagonal in sequance from left to right
-	private boolean isWinComboDiagonalLeftToRight(String playerType) {
+	private boolean isWinComboDiagonalLeftToRight(String player, int playFieldLength, int playFieldOneSide) {
 
-		int playFieldSizeTotal = playField.length;
-		Double playFieldOneSideTemp = Math.sqrt(Double.valueOf(playFieldSizeTotal));
-		int playFieldOneSide = playFieldOneSideTemp.intValue();
 		boolean isdiagonalWin = true;
 
 		int counter = 0;
-		for (int i = playFieldOneSide + 1; i < playFieldSizeTotal; i = i * counter) {
+		for (int i = playFieldOneSide + 1; i < playFieldLength; i = i * counter) {
 
-			if (!playField[i].equals(playerType)) {
+			if (!playField[i].equals(player)) {
 				isdiagonalWin = false;
-			}			
+			}
 			counter++;
 		}
 
