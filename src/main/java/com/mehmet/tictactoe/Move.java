@@ -4,7 +4,7 @@ public class Move {
 	private  int spot;
 	private int score;
 	
-	public int getSpotx() {
+	public int getSpot() {
 		return spot;
 	}
 	public void setSpot(int index) {

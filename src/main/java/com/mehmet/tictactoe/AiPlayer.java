@@ -15,7 +15,7 @@ public class AiPlayer extends PlayerBase {
 
 	public int playSpot() {
 
-		int spot = getBestSpotForAiPlayer(player).getSpotx();
+		int spot = getBestSpotForAiPlayer(player).getSpot();
 		playField[Integer.valueOf(spot)] = player;
 		System.out.println();
 		System.out.println("Config.aiPlayer play for " + player + ": " + spot);
@@ -46,7 +46,7 @@ public class AiPlayer extends PlayerBase {
 				move.setScore(getBestSpotForAiPlayer(Config.aiPlayer).getScore());
 			}
 
-			playField[emptySpot] = String.valueOf(move.getSpotx());
+			playField[emptySpot] = String.valueOf(move.getSpot());
 
 			if ((player == Config.aiPlayer && move.getScore() == 10)
 					|| (player == Config.player1 && move.getScore() == -10)
