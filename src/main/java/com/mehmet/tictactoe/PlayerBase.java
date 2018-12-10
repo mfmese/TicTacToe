@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public abstract class PlayerBase {
 
-	private String[] playField;
-	private String player;
+	public String playerName;	
+	public String[] playField;	
 
 	public PlayerBase() {
 
@@ -14,19 +14,19 @@ public abstract class PlayerBase {
 
 	public PlayerBase(String[] playField, String player) {
 		this.playField = playField;
-		this.player = player;
+		this.playerName = player;
 	}
 
 	public abstract int playSpot() throws IOException;
 
 	public ArrayList<Integer> getEmptySpotsInPlayField() {
 
-		ArrayList<Integer> emptySpots = new ArrayList<Integer>();
+		ArrayList<Integer> emptySpots = new ArrayList<>();
 
 		for (int i = 0; i < playField.length; i++) {
 
-			if (playField[i].equals(Config.aiPlayer) || playField[i].equals(Config.player1)
-					|| playField[i].equals(Config.player2))
+			if (playField[i].equals(Config.AIPLAYER) || playField[i].equals(Config.PLAYER1)
+					|| playField[i].equals(Config.PLAYER2))
 				continue;
 
 			emptySpots.add(i);
@@ -39,7 +39,7 @@ public abstract class PlayerBase {
 	public boolean isGaveOver() {
 
 		if (isWinner()) {
-			System.out.println("Winner is " + player);
+			System.out.println("Winner is " + playerName);
 			return true;
 		} else if (isTieGame()) {
 			System.out.println("Tie Game");
@@ -51,9 +51,9 @@ public abstract class PlayerBase {
 
 	public void showPlayField() {
 
-		Double playFieldOneSideCount = Math.sqrt(Double.valueOf(playField.length));
+		Double playFieldOneSideCount = Math.sqrt(playField.length);
 
-		for (int i = 0; i < Config.playFieldSize; i++) {
+		for (int i = 0; i < Config.PLAYFIELDSIZE; i++) {
 			if (i % playFieldOneSideCount == 0) {
 				System.out.println();
 			}
@@ -67,36 +67,31 @@ public abstract class PlayerBase {
 	public boolean isTieGame() {
 
 		ArrayList<Integer> emptySpots = getEmptySpotsInPlayField();
+		boolean isTie = false;
 		if (emptySpots.isEmpty()) {
-			return true;
+			isTie =  true;
 		}
 
-		return false;
+		return isTie;
 	}
 
 	public boolean isWinner() {
-		return isWinner(player);
+		return isWinner(playerName);
 	}
 
 	public boolean isWinner(String player) {
 
 		int playFieldLength = playField.length;
-		Double playFieldOneSideTemp = Math.sqrt(Double.valueOf(playFieldLength));
+		Double playFieldOneSideTemp = Math.sqrt(playFieldLength);
 		int playFieldOneSide = playFieldOneSideTemp.intValue();
 		
-		if (isWinComboRowAndColumn(player, playFieldLength, playFieldOneSide)) {
-			return true;
+		boolean isWin = false;
+		if (isWinComboRowAndColumn(player, playFieldLength, playFieldOneSide)
+				|| isWinComboDiagonalLeftToRight(player, playFieldLength, playFieldOneSide)
+				|| isWinComboDiagonalRightToLeft(player, playFieldLength, playFieldOneSide)) {
+			isWin = true;
 		}
-
-		if (isWinComboDiagonalLeftToRight(player, playFieldLength, playFieldOneSide)) {
-			return true;
-		}
-
-		if (isWinComboDiagonalRightToLeft(player, playFieldLength, playFieldOneSide)) {
-			return true;
-		}
-
-		return false;
+		return isWin;
 	}
 
 	// Check playerType is at the same column And Row in sequance

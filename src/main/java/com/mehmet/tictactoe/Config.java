@@ -1,9 +1,11 @@
 package com.mehmet.tictactoe;
 
 public class Config {
+	
+	private Config() {}
 
-	static String player1 = "O";
-	static String player2 = "C";
-	static String aiPlayer = "X";
-	static Integer playFieldSize = 16;
+	static final String PLAYER1 = "O";
+	static final String PLAYER2 = "C";
+	static final String AIPLAYER = "X";
+	static final Integer PLAYFIELDSIZE = 16;
 }

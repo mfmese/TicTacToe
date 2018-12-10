@@ -4,53 +4,48 @@ import java.util.ArrayList;
 
 public class AiPlayer extends PlayerBase {
 
-	private String player;
-	private String[] playField;
-
 	public AiPlayer(String player, String[] playField) {
 		super(playField, player);
-		this.player = player;
-		this.playField = playField;
 	}
 
 	public int playSpot() {
 
-		int spot = getBestSpotForAiPlayer(player).getSpot();
-		playField[Integer.valueOf(spot)] = player;
+		int spot = getBestSpotForAiPlayer(playerName).getSpot();
+		playField[Integer.valueOf(spot)] = playerName;
 		System.out.println();
-		System.out.println("Config.aiPlayer play for " + player + ": " + spot);
+		System.out.println("Config.aiPlayer play for " + playerName + ": " + spot);
 		return Integer.valueOf(spot);
 	}
 
 	private Move getBestSpotForAiPlayer(String player) {
 
 		ArrayList<Integer> emptySpots = getEmptySpotsInPlayField();
-		ArrayList<Move> moves = new ArrayList<Move>();
+		ArrayList<Move> moves = new ArrayList<>();
 
 		Move move = getBestScoreForAiPlayer(emptySpots);
 		if (move.getScore() != -1)
 			return move;
 
 		for (int i = 0; i < emptySpots.size(); i++) {
-			int emptySpot = Integer.valueOf(emptySpots.get(i));
+			int emptySpot = emptySpots.get(i);
 
 			move.setSpot(Integer.valueOf(playField[emptySpot]));
 
 			playField[emptySpot] = player;
 
-			if (player == Config.aiPlayer) {
-				move.setScore(getBestSpotForAiPlayer(Config.player1).getScore());
-			} else if (player == Config.player1) {
-				move.setScore(getBestSpotForAiPlayer(Config.player1).getScore());
-			} else if (player == Config.player1) {
-				move.setScore(getBestSpotForAiPlayer(Config.aiPlayer).getScore());
+			if (player == Config.AIPLAYER) {
+				move.setScore(getBestSpotForAiPlayer(Config.PLAYER1).getScore());
+			} else if (player == Config.PLAYER1) {
+				move.setScore(getBestSpotForAiPlayer(Config.PLAYER2).getScore());
+			} else if (player == Config.PLAYER2) {
+				move.setScore(getBestSpotForAiPlayer(Config.AIPLAYER).getScore());
 			}
 
 			playField[emptySpot] = String.valueOf(move.getSpot());
 
-			if ((player == Config.aiPlayer && move.getScore() == 10)
-					|| (player == Config.player1 && move.getScore() == -10)
-					|| (player == Config.player1 && move.getScore() == -10))
+			if ((player == Config.AIPLAYER && move.getScore() == 10)
+					|| (player == Config.PLAYER1 && move.getScore() == -10)
+					|| (player == Config.PLAYER2 && move.getScore() == -10))
 				return move;
 			else
 				moves.add(move);
@@ -64,9 +59,9 @@ public class AiPlayer extends PlayerBase {
 		Move move = new Move();
 		move.setScore(-1);
 
-		if (isWinner(Config.player1) || isWinner(Config.player2))
+		if (isWinner(Config.PLAYER1) || isWinner(Config.PLAYER2))
 			move.setScore(-10);
-		else if (isWinner(Config.aiPlayer))
+		else if (isWinner(Config.AIPLAYER))
 			move.setScore(10);
 		else if (emptySpots.isEmpty())
 			move.setScore(0);
@@ -80,7 +75,7 @@ public class AiPlayer extends PlayerBase {
 		int bestMove = 0;
 
 		for (int i = 0; i < moves.size(); i++) {
-			if (player == Config.aiPlayer) {
+			if (player == Config.AIPLAYER) {
 				if (moves.get(i).getScore() > bestScore) {
 					bestScore = moves.get(i).getScore();
 					bestMove = i;

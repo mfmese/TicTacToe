@@ -6,18 +6,13 @@ import java.io.InputStreamReader;
 
 public class Player extends PlayerBase{
 
-	private String player;
-	private String[] playField;
-
 	public Player(String player, String[] playField) {
 		super(playField, player);
-		this.player = player;
-		this.playField = playField;
 	}
 
 	public void playSpot(int spot) {
 		
-		playField[Integer.valueOf(spot)] = player;
+		playField[Integer.valueOf(spot)] = playerName;
 	}
 	
 	public int playSpot() throws IOException {
@@ -27,7 +22,7 @@ public class Player extends PlayerBase{
 		while (!isValid) {
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				System.out.print("Enter spot for " + player + ": ");
+				System.out.print("Enter spot for " + playerName + ": ");
 
 				spot = br.readLine();
 
@@ -41,7 +36,7 @@ public class Player extends PlayerBase{
 			}
 		}
 		
-		playField[Integer.valueOf(spot)] = player;
+		playField[Integer.valueOf(spot)] = playerName;
 		
 		return Integer.valueOf(spot);
 	}

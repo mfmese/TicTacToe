@@ -12,11 +12,11 @@ public class PlayerFactory {
 
 		switch (playerType) {
 		case "PLAYER1":
-			return new Player(Config.player1, playField);
+			return new Player(Config.PLAYER1, playField);
 		case "PLAYER2":
-			return new Player(Config.player2, playField);
+			return new Player(Config.PLAYER2, playField);
 		case "AIPLAYER":
-			return new AiPlayer(Config.aiPlayer, playField);
+			return new AiPlayer(Config.AIPLAYER, playField);
 		default:
 			return null;
 		}
