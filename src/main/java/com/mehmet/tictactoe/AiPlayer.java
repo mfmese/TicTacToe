@@ -10,14 +10,14 @@ public class AiPlayer extends PlayerBase {
 
 	public int playSpot() {
 
-		int spot = getBestSpotForAiPlayer(playerName).getSpot();
-		playField[Integer.valueOf(spot)] = playerName;
+		int spot = getBestSpotForAiPlayer(getPlayerName()).getSpot();
+		setPlayField(spot, getPlayerName());
 		System.out.println();
-		System.out.println("Config.aiPlayer play for " + playerName + ": " + spot);
+		System.out.println("Config.aiPlayer play for " + getPlayerName() + ": " + spot);
 		return Integer.valueOf(spot);
 	}
 
-	private Move getBestSpotForAiPlayer(String player) {
+	private Move getBestSpotForAiPlayer(String playerName) {
 
 		ArrayList<Integer> emptySpots = getEmptySpotsInPlayField();
 		ArrayList<Move> moves = new ArrayList<>();
@@ -29,29 +29,29 @@ public class AiPlayer extends PlayerBase {
 		for (int i = 0; i < emptySpots.size(); i++) {
 			int emptySpot = emptySpots.get(i);
 
-			move.setSpot(Integer.valueOf(playField[emptySpot]));
+			move.setSpot(Integer.valueOf(getPlayField(emptySpot)));
+		
+			setPlayField(emptySpot, playerName);
 
-			playField[emptySpot] = player;
-
-			if (player == Config.AIPLAYER) {
+			if (playerName == Config.AIPLAYER) {
 				move.setScore(getBestSpotForAiPlayer(Config.PLAYER1).getScore());
-			} else if (player == Config.PLAYER1) {
+			} else if (playerName == Config.PLAYER1) {
 				move.setScore(getBestSpotForAiPlayer(Config.PLAYER2).getScore());
-			} else if (player == Config.PLAYER2) {
+			} else if (playerName == Config.PLAYER2) {
 				move.setScore(getBestSpotForAiPlayer(Config.AIPLAYER).getScore());
 			}
 
-			playField[emptySpot] = String.valueOf(move.getSpot());
+			setPlayField(emptySpot, String.valueOf(move.getSpot()));
 
-			if ((player == Config.AIPLAYER && move.getScore() == 10)
-					|| (player == Config.PLAYER1 && move.getScore() == -10)
-					|| (player == Config.PLAYER2 && move.getScore() == -10))
+			if ((playerName == Config.AIPLAYER && move.getScore() == 10)
+					|| (playerName == Config.PLAYER1 && move.getScore() == -10)
+					|| (playerName == Config.PLAYER2 && move.getScore() == -10))
 				return move;
 			else
 				moves.add(move);
 		}
 
-		return getBestMoveForAiPlayer(moves, player);
+		return getBestMoveForAiPlayer(moves, playerName);
 	}
 
 	private Move getBestScoreForAiPlayer(ArrayList<Integer> emptySpots) {

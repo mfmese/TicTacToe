@@ -5,8 +5,28 @@ import java.util.ArrayList;
 
 public abstract class PlayerBase {
 
-	public String playerName;	
-	public String[] playField;	
+	private String playerName;	
+	private String[] playField;	
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+	public String[] getPlayField() {
+		return playField;
+	}
+	
+	public String getPlayField(int spot) {
+		return playField[spot];
+	}
+
+	public void setPlayField(int spot, String playerName) {
+		this.playField[spot] = playerName;
+	}
 
 	public PlayerBase() {
 

@@ -10,9 +10,8 @@ public class Player extends PlayerBase{
 		super(playField, player);
 	}
 
-	public void playSpot(int spot) {
-		
-		playField[Integer.valueOf(spot)] = playerName;
+	public void playSpot(int spot) {		
+		setPlayField(spot, getPlayerName());
 	}
 	
 	public int playSpot() throws IOException {
@@ -22,7 +21,7 @@ public class Player extends PlayerBase{
 		while (!isValid) {
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				System.out.print("Enter spot for " + playerName + ": ");
+				System.out.print("Enter spot for " + getPlayerName() + ": ");
 
 				spot = br.readLine();
 
@@ -36,15 +35,15 @@ public class Player extends PlayerBase{
 			}
 		}
 		
-		playField[Integer.valueOf(spot)] = playerName;
+		setPlayField(Integer.valueOf(spot), getPlayerName());
 		
 		return Integer.valueOf(spot);
 	}
 
 	private boolean isValid(String spot) {
 
-		for (int i = 0; i < playField.length; i++) {
-			if (spot.equals(playField[i])) {
+		for (int i = 0; i < getPlayField().length; i++) {
+			if (spot.equals(getPlayField(i))) {
 				return true;
 			}
 		}
